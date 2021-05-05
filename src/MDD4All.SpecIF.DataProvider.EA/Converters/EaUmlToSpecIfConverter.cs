@@ -233,7 +233,7 @@ namespace MDD4All.SpecIF.DataProvider.EA.Converters
             return result;
         }
 
-        private Node _hierarchy = null;
+        //private Node _hierarchy = null;
 
         public Node GetHierarchy()
         {
