@@ -1,0 +1,50 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <GenerateAssemblyInfo>true</GenerateAssemblyInfo>
+    <SignAssembly>true</SignAssembly>
+    <AssemblyOriginatorKeyFile>MDD4All_Github.snk</AssemblyOriginatorKeyFile>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageTags>SpecIF DataProvider EnterpriseArchitect</PackageTags>
+    <Company>MDD4All.de</Company>
+    <Description>SpecIF data provider for Sparx Enterprise Architect.</Description>
+    <Copyright>(c) MDD4All.de</Copyright>
+    <AssemblyName>MDD4All.SpecIF.DataProvider.EA</AssemblyName>
+    <RootNamespace>MDD4All.SpecIF.DataProvider.EA</RootNamespace>
+  </PropertyGroup>
+
+    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+        <DefineConstants>DEBUG;TRACE</DefineConstants>
+        <DebugType>full</DebugType>
+        <DebugSymbols>true</DebugSymbols>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <Compile Remove="Cache\**" />
+      <EmbeddedResource Remove="Cache\**" />
+      <None Remove="Cache\**" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Compile Remove="Converters\EaToSpecIfConverter.cs" />
+    </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="MDD4All.EAFacade.DataAccess.Cached" Version="2.2.1.260" />
+    <PackageReference Include="MDD4All.EnterpriseArchitect.SvgGenerator" Version="3.3.0.272" />
+    <PackageReference Include="System.Drawing.Common" Version="5.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="$(SolutionDir)\MDD4All.SpecIF.DataProvider.Contracts\src\MDD4All.SpecIF.DataProvider.Contracts\MDD4All.SpecIF.DataProvider.Contracts-dev.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="Interop.EA">
+      <HintPath>..\libs\Interop.EA.dll</HintPath>
+      <EmbedInteropTypes>false</EmbedInteropTypes>
+    </Reference>
+  </ItemGroup>
+
+</Project>
