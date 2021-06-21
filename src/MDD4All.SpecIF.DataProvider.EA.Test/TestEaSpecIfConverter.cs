@@ -1,19 +1,16 @@
 ﻿using MDD4All.SpecIF.DataModels;
+using MDD4All.SpecIF.DataProvider.Contracts;
 using MDD4All.SpecIF.DataProvider.EA.Converters;
 using MDD4All.SpecIF.DataProvider.File;
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
-using System.Text;
 using EAAPI = EA;
 
 namespace MDD4All.SoecIF.DataProvider.EA.Test
 {
-	public class TestEaSpecIfConverter
+    public class TestEaSpecIfConverter
 	{
-
-		
 
 		public void StartTest()
 		{
@@ -33,18 +30,24 @@ namespace MDD4All.SoecIF.DataProvider.EA.Test
 				{
 					Console.WriteLine("Model open");
 
-					EAAPI.Package rootModelPackage = repository.GetPackageByGuid("{45A143E0-D43A-4f51-ACA6-FF695EEE3256}");
+					//EAAPI.Package rootModelPackage = repository.GetPackageByGuid("{45A143E0-D43A-4f51-ACA6-FF695EEE3256}");
+
+					EAAPI.Diagram diagram = repository.GetDiagramByGuid("{BF30DD09-E13E-451b-B210-786F93A74936}") as EAAPI.Diagram;
 
 					SpecIF.DataModels.SpecIF specIF;
 
-					//EaUmlToSpecIfConverter converter;
+					EaUmlToSpecIfConverter converter;
 
-					//converter = new EaUmlToSpecIfConverter(repository);
+					ISpecIfMetadataReader metadataReader = new SpecIfFileMetadataReader("d:\\work\\github\\SpecIF\\classDefinitions");
+
+					converter = new EaUmlToSpecIfConverter(repository, metadataReader);
+
+					Resource resource = converter.ConvertDiagram(diagram);
 
 					//specIF = converter.ConvertModelToSpecIF(rootModelPackage);
 						
 
-					//SpecIfFileReaderWriter.SaveSpecIfToFile(specIF, @"C:\Users\olli\Documents\work\github\SpecIF-Graph\source\specif\TestModel1.specif");
+					//SpecIfFileReaderWriter.SaveSpecIfToFile(specIF, @"D:\speciftest\TestModel1.specif");
 
 					Console.WriteLine("Finished");
 				}
@@ -55,7 +58,7 @@ namespace MDD4All.SoecIF.DataProvider.EA.Test
 			}
 			finally
 			{
-				Console.ReadLine();
+				//Console.ReadLine();
 				repository.Exit();
 			}
 
