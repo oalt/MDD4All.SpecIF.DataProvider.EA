@@ -31,7 +31,7 @@
   <ItemGroup>
     <PackageReference Include="MDD4All.EAFacade.DataAccess.Cached" Version="2.2.1.260" />
     <PackageReference Include="MDD4All.EnterpriseArchitect.SvgGenerator" Version="3.3.0.272" />
-    <PackageReference Include="MDD4All.SpecIF.DataProvider.Contracts" Version="3.0.0.10" />
+    <PackageReference Include="MDD4All.SpecIF.DataProvider.Contracts" Version="3.1.0.12" />
     <PackageReference Include="System.Drawing.Common" Version="5.0.0" />
   </ItemGroup>
 
