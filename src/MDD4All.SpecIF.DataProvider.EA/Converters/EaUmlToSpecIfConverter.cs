@@ -245,7 +245,7 @@ namespace MDD4All.SpecIF.DataProvider.EA.Converters
 
             //if (_hierarchy == null)
             //{
-            EAAPI.Package package = _repository.GetPackageByGuid("{45A143E0-D43A-4f51-ACA6-FF695EEE3256}");
+            EAAPI.Package package = _repository.GetPackageByGuid("{2F56176A-4BFD-4406-9F5D-49F2E29E3806}");
             // 
             //EAAPI.Package package = _repository.GetPackageByGuid("{962FD96B-4E7C-43cf-89B8-4D29D19C0A0F}");
 
@@ -775,6 +775,7 @@ namespace MDD4All.SpecIF.DataProvider.EA.Converters
                 if (resourceClass.ID == "RC-State" ||
                     resourceClass.ID == "RC-Actor" ||
                     resourceClass.ID == "RC-Collection" ||
+                    resourceClass.ID == "RC-Package" ||
                     resourceClass.ID == "RC-Event")
                 {
                     string namespc = "";
@@ -2582,7 +2583,7 @@ namespace MDD4All.SpecIF.DataProvider.EA.Converters
 
                 case "Package":
 
-                    result = _metadataReader.GetResourceClassByKey(new Key("RC-Collection", "1.1"));
+                    result = _metadataReader.GetResourceClassByKey(new Key("RC-Package", "1.1"));
 
                     if (stereotype == "specification")
                     {
