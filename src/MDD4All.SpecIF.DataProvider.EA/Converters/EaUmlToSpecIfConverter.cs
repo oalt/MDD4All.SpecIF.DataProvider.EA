@@ -9,6 +9,7 @@ using MDD4All.EnterpriseArchitect.Manipulations;
 using System.IO;
 using System.Drawing;
 using MDD4All.SpecIF.DataModels.Helpers;
+using MDD4All.SpecIF.DataModels.Manipulation;
 using MDD4All.SpecIF.DataProvider.Contracts;
 using MDD4All.EnterpriseArchitect.SvgGenerator;
 using MDD4All.SVG.DataModels;
@@ -741,35 +742,15 @@ namespace MDD4All.SpecIF.DataProvider.EA.Converters
 
                 elementResource.Properties = new List<Property>();
 
-                elementResource.Properties.Add(
-                    new Property()
-                    {
-                        Class = new Key("PC-Name", "1.1"),
-                        Value = eaElement.Name,
+                elementResource.SetPropertyValue(new Key("PC-Name", "1.1"), new Value(eaElement.Name));
 
-                    }
-                    );
+                elementResource.SetPropertyValue(new Key("PC-Description", "1.1"), new Value(eaElement.Notes));
 
-                elementResource.Properties.Add(
-                    new Property()
-                    {
-
-                        Class = new Key("PC-Description", "1.1"),
-                        Value = eaElement.Notes,
-
-                    }
-                    );
+                
 
                 if (resourceClass.ID != "RC-Hierarchy")
                 {
-                    elementResource.Properties.Add(
-                        new Property()
-                        {
-                            Class = new Key("PC-Status", "1.1"),
-                            Value = GetStatusEnumID(eaElement.Status),
-
-                        }
-                        );
+                    elementResource.SetPropertyValue(new Key("PC-Status", "1.1"), new Value(GetStatusEnumID(eaElement.Status)));
                 }
 
                 if (resourceClass.ID == "RC-State" ||
@@ -794,13 +775,7 @@ namespace MDD4All.SpecIF.DataProvider.EA.Converters
                         stereotypeValue = stereotype;
                     }
 
-                    elementResource.Properties.Add(
-                        new Property()
-                        {
-                            Class = new Key("PC-Stereotype", "1.1"),
-                            Value = stereotypeValue
-                        }
-                        );
+                    elementResource.SetPropertyValue(new Key("PC-Stereotype", "1.1"), new Value(stereotypeValue));
 
                     string elementLegacyType = "";
 
@@ -849,13 +824,8 @@ namespace MDD4All.SpecIF.DataProvider.EA.Converters
                         //}
                     }
 
-                    elementResource.Properties.Add(
-                        new Property()
-                        {
-                            Class = new Key("PC-Type", "1.1"),
-                            Value = elementLegacyType
-                        }
-                        );
+                    elementResource.SetPropertyValue(new Key("PC-Type", "1.1"), new Value(elementLegacyType));
+                    
 
                     string id = EaSpecIfGuidConverter.ConvertEaGuidToSpecIfGuid(eaElement.ElementGUID) + "_VISIBILITY";
 
@@ -870,13 +840,8 @@ namespace MDD4All.SpecIF.DataProvider.EA.Converters
 
                     if (!string.IsNullOrEmpty(identifierValue))
                     {
-                        elementResource.Properties.Add(
-                            new Property()
-                            {
-                                Class = new Key("PC-VisibleId", "1.1"),
-                                Value = identifierValue
-                            }
-                            );
+                        elementResource.SetPropertyValue(new Key("PC-VisibleId", "1.1"), new Value(identifierValue));
+                        
                     }
 
                     string disciplineValue = eaElement.GetTaggedValueString("Perspective");
@@ -885,11 +850,7 @@ namespace MDD4All.SpecIF.DataProvider.EA.Converters
                     {
                         if (disciplineValue == "User")
                         {
-                            elementResource.Properties.Add(new Property()
-                            {
-                                Class = new Key("PC-Perspective", "1.1"),
-                                Value = "V-perspective-1"
-                            });
+                            elementResource.SetPropertyValue(new Key("PC-Perspective", "1.1"), new Value("V-perspective-1"));
                         }
                     }
                 }
@@ -977,7 +938,7 @@ namespace MDD4All.SpecIF.DataProvider.EA.Converters
                 // constraints
 
                 // alternative ID
-                result.AlternativeIDs = new List<object>();
+                result.AlternativeIDs = new List<AlternativeId>();
 
                 AlternativeId alternativeId = new AlternativeId()
                 {
@@ -1270,39 +1231,14 @@ namespace MDD4All.SpecIF.DataProvider.EA.Converters
 
                 result.Properties = new List<Property>();
 
-                result.Properties.Add(
-                    new Property()
-                    {
-                        Class = new Key("PC-Name", "1.1"),
-                        Value = elementConstraint.Name
+                result.SetPropertyValue(new Key("PC-Name", "1.1"), new Value(elementConstraint.Name));
 
-                    }
-                    );
+                result.SetPropertyValue(new Key("PC-Type", "1.1"), new Value("OMG:UML:2.5.1:Constraint"));
 
-                result.Properties.Add(
-                    new Property()
-                    {
-                        Class = new Key("PC-Type", "1.1"),
-                        Value = "OMG:UML:2.5.1:Constraint"
+                result.SetPropertyValue(new Key("PC-Stereotype", "1.1"), new Value(elementConstraint.Type));
 
-                    }
-                    );
+                result.SetPropertyValue(new Key("PC-Value", "1.1"), new Value(elementConstraint.Notes));
 
-                result.Properties.Add(
-                        new Property()
-                        {
-                            Class = new Key("PC-Stereotype", "1.1"),
-                            Value = elementConstraint.Type
-                        }
-                        );
-
-                result.Properties.Add(
-                        new Property()
-                        {
-                            Class = new Key("PC-Value", "1.1"),
-                            Value = elementConstraint.Notes
-                        }
-                        );
             }
             else
             {
@@ -1424,29 +1360,10 @@ namespace MDD4All.SpecIF.DataProvider.EA.Converters
 
                 result.Properties = new List<Property>();
 
-                result.Properties.Add(
-                    new Property()
-                    {
-                        Class = new Key("PC-Name", "1.1"),
-                        Value = parameter.Name
-                    }
-                    );
-
-                result.Properties.Add(
-                    new Property()
-                    {
-                        Class = new Key("PC-Description", "1.1"),
-                        Value = parameter.Notes
-                    }
-                    );
-
-                result.Properties.Add(
-                    new Property()
-                    {
-                        Class = new Key("PC-Type", "1.1"),
-                        Value = "OMG:UML:2.5.1:Parameter"
-                    }
-                    );
+                result.SetPropertyValue(new Key("PC-Name", "1.1"), new Value(parameter.Name));
+                result.SetPropertyValue(new Key("PC-Description", "1.1"), new Value(parameter.Notes));
+                result.SetPropertyValue(new Key("PC-Type", "1.1"), new Value("OMG:UML:2.5.1:Parameter"));
+                
             }
             else
             {
@@ -1477,33 +1394,11 @@ namespace MDD4All.SpecIF.DataProvider.EA.Converters
 
                 result.Properties = new List<Property>();
 
-                result.Properties.Add(new Property(new Key("PC-Name", "1.1"), attribute.Name));
-
-
-                result.Properties.Add(
-                    new Property()
-                    {
-                        Class = new Key("PC-Description", "1.1"),
-                        Value = attribute.Notes
-                    }
-                    );
-
-                result.Properties.Add(
-                    new Property()
-                    {
-                        Class = new Key("PC-Type", "1.1"),
-                        Value = "OMG:UML:2.5.1:Attribute"
-                    }
-                    );
-
-                result.Properties.Add(
-                        new Property()
-                        {
-                            Class = new Key("PC-Value", "1.1"),
-                            Value = attribute.Default
-                        }
-                        );
-
+                result.SetPropertyValue(new Key("PC-Name", "1.1"), new Value(attribute.Name));
+                result.SetPropertyValue(new Key("PC-Description", "1.1"), new Value(attribute.Notes));
+                result.SetPropertyValue(new Key("PC-Type", "1.1"), new Value("OMG:UML:2.5.1:Attribute"));
+                result.SetPropertyValue(new Key("PC-Value", "1.1"), new Value(attribute.Default));
+         
                 string id = EaSpecIfGuidConverter.ConvertEaGuidToSpecIfGuid(attribute.AttributeGUID) + "_VISIBILITY";
 
                 result.Properties.Add(GetVisibilityProperty(attribute.Visibility, id, elementRevision, eaElement.Modified, eaElement.Author));
@@ -1760,39 +1655,10 @@ namespace MDD4All.SpecIF.DataProvider.EA.Converters
 
             result.Properties = new List<Property>();
 
-            result.Properties.Add(
-                new Property()
-                {
-                    Class = new Key("PC-Name", "1.1"),
-                    Value = connectorConstraint.Name
-
-                }
-                );
-
-            result.Properties.Add(
-                new Property()
-                {
-                    Class = new Key("PC-Type", "1.1"),
-                    Value = "OMG:UML:2.5.1:Constraint"
-
-                }
-                );
-
-            result.Properties.Add(
-                    new Property()
-                    {
-                        Class = new Key("PC-Stereotype", "1.1"),
-                        Value = connectorConstraint.Type
-                    }
-                    );
-
-            result.Properties.Add(
-                    new Property()
-                    {
-                        Class = new Key("PC-Value", "1.1"),
-                        Value = connectorConstraint.Notes
-                    }
-                    );
+            result.SetPropertyValue(new Key("PC-Name", "1.1"), new Value(connectorConstraint.Name));
+            result.SetPropertyValue(new Key("PC-Type", "1.1"), new Value("OMG:UML:2.5.1:Constraint"));
+            result.SetPropertyValue(new Key("PC-Stereotype", "1.1"), new Value(connectorConstraint.Type));
+            result.SetPropertyValue(new Key("PC-Value", "1.1"), new Value(connectorConstraint.Notes));
 
             return result;
         }
@@ -1808,39 +1674,10 @@ namespace MDD4All.SpecIF.DataProvider.EA.Converters
 
             result.Properties = new List<Property>();
 
-            result.Properties.Add(
-                new Property()
-                {
-                    Class = new Key("PC-Name", "1.1"),
-                    Value = connector.TransitionGuard
-
-                }
-                );
-
-            result.Properties.Add(
-                new Property()
-                {
-                    Class = new Key("PC-Type", "1.1"),
-                    Value = "OMG:UML:2.5.1:Constraint"
-
-                }
-                );
-
-            result.Properties.Add(
-                    new Property()
-                    {
-                        Class = new Key("PC-Stereotype", "1.1"),
-                        Value = "Guard"
-                    }
-                    );
-
-            result.Properties.Add(
-                    new Property()
-                    {
-                        Class = new Key("PC-Value", "1.1"),
-                        Value = connector.TransitionGuard
-                    }
-                    );
+            result.SetPropertyValue(new Key("PC-Name", "1.1"), new Value(connector.TransitionGuard));
+            result.SetPropertyValue(new Key("PC-Type", "1.1"), new Value("OMG:UML:2.5.1:Constraint"));
+            result.SetPropertyValue(new Key("PC-Stereotype", "1.1"), new Value("Guard"));
+            result.SetPropertyValue(new Key("PC-Value", "1.1"), new Value(connector.TransitionGuard));
 
             return result;
         }
@@ -1875,37 +1712,10 @@ namespace MDD4All.SpecIF.DataProvider.EA.Converters
 
                 tagResource.Properties = new List<Property>();
 
-                tagResource.Properties.Add(
-                    new Property()
-                    {
-                        Class = new Key("PC-Name", "1.1"),
-                        Value = tagName
-                    }
-                    );
-
-                tagResource.Properties.Add(
-                    new Property()
-                    {
-                        Class = new Key("PC-Description", "1.1"),
-                        Value = tag.Notes
-                    }
-                    );
-
-                tagResource.Properties.Add(
-                    new Property()
-                    {
-                        Class = new Key("PC-Type", "1.1"),
-                        Value = "OMG:UML:2.5.1:TaggedValue"
-                    }
-                    );
-
-                tagResource.Properties.Add(
-                    new Property()
-                    {
-                        Class = new Key("PC-Value", "1.1"),
-                        Value = tag.Value
-                    }
-                    );
+                tagResource.SetPropertyValue(new Key("PC-Name", "1.1"), new Value(tagName));
+                tagResource.SetPropertyValue(new Key("PC-Description", "1.1"), new Value(tag.Notes));
+                tagResource.SetPropertyValue(new Key("PC-Type", "1.1"), new Value("OMG:UML:2.5.1:TaggedValue"));
+                tagResource.SetPropertyValue(new Key("PC-Value", "1.1"), new Value(tag.Value));
 
                 string stereotypeValue = "";
 
@@ -1918,13 +1728,7 @@ namespace MDD4All.SpecIF.DataProvider.EA.Converters
                     stereotypeValue = stereotype;
                 }
 
-                tagResource.Properties.Add(
-                    new Property()
-                    {
-                        Class = new Key("PC-Stereotype", "1.1"),
-                        Value = stereotypeValue
-                    }
-                    );
+                tagResource.SetPropertyValue(new Key("PC-Stereotype", "1.1"), new Value(stereotypeValue));
 
                 result.Add(tagResource);
             }
@@ -2065,41 +1869,17 @@ namespace MDD4All.SpecIF.DataProvider.EA.Converters
 
                     result.Properties = new List<Property>();
 
-                    result.Properties.Add(
-                        new Property()
-                        {
-                            Class = new Key("PC-Name", "1.1"),
-                            Value = diagram.Name
-                        }
-                        );
+                    result.SetPropertyValue(new Key("PC-Name", "1.1"), new Value(diagram.Name));
+                    result.SetPropertyValue(new Key("PC-Description", "1.1"), new Value(diagram.Notes));
+                    result.SetPropertyValue(new Key("PC-Diagram", "1.1"),
+                                            new Value(new MultilanguageText
+                                            {
+                                                Text = diagramXHTML,
+                                                Format = "xhtml"
+                                            }));
 
-                    result.Properties.Add(
-                        new Property()
-                        {
-                            Class = new Key("PC-Description", "1.1"),
-                            Value = diagram.Notes
-                        }
-                        );
-
-                    result.Properties.Add(
-                        new Property()
-                        {
-                            Class = new Key("PC-Diagram", "1.1"),
-                            MultilanguageValue = new MultilanguageText
-                            {
-                                Text = diagramXHTML,
-                                Format = "xhtml"
-                            }
-                        });
-
-                    result.Properties.Add(
-                        new Property()
-                        {
-                            Class = new Key("PC-Type", "1.1"),
-                            Value = "OMG:UML:2.5.1:" + GetUmlDiagramTypeFromEaType(diagram.Type)
-                        }
-                        );
-
+                    result.SetPropertyValue(new Key("PC-Type", "1.1"), new Value("OMG:UML:2.5.1:" + GetUmlDiagramTypeFromEaType(diagram.Type)));
+                    
                     #endregion
 
                     DiagramResource diagramResource = new DiagramResource
@@ -2818,32 +2598,11 @@ will internally represent Real numbers using a floating point standard such as I
 
             result.Properties = new List<Property>();
 
-            result.Properties.Add(
-                new Property()
-                {
-                    Class = new Key("PC-Name", "1.1"),
-                    Value = title
-                }
-                );
-
-            result.Properties.Add(
-                new Property()
-                {
-                    Class = new Key("PC-Description", "1.1"),
-                    Value = description
-                }
-                );
-
-            result.Properties.Add(
-                new Property()
-                {
-                    Class = new Key("PC-Type", "1.1"),
-                    Value = "OMG:UML:2.5.1:PrimitiveType"
-                }
-                );
+            result.SetPropertyValue(new Key("PC-Name", "1.1"), new Value(title));
+            result.SetPropertyValue(new Key("PC-Description", "1.1"), new Value(description));
+            result.SetPropertyValue(new Key("PC-Type", "1.1"), new Value("OMG:UML:2.5.1:PrimitiveType"));
 
             return result;
-
         }
 
         private Resource GetPrimitiveTypeBySwTypeName(string swTypeName)
