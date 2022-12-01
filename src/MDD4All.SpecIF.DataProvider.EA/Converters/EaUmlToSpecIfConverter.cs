@@ -47,6 +47,8 @@ namespace MDD4All.SpecIF.DataProvider.EA.Converters
         private Dictionary<string, PortStateResource> _portStateResources = new Dictionary<string, PortStateResource>();
         private Dictionary<string, DiagramResource> _diagramResources = new Dictionary<string, DiagramResource>();
 
+        private Dictionary<Key, Node> _nodes = new Dictionary<Key, Node>();
+
         private ISpecIfMetadataReader _metadataReader;
 
         /// <summary>
@@ -252,6 +254,8 @@ namespace MDD4All.SpecIF.DataProvider.EA.Converters
 
             GetModelHierarchyRecursively(package, node);
 
+            _nodes.Add(new Key(node.ID, node.Revision), node);
+
             //_hierarchy = node;
             result = node;
 
@@ -267,10 +271,18 @@ namespace MDD4All.SpecIF.DataProvider.EA.Converters
             return result;
         }
 
+        public Node GetNodeByKey(Key key)
+        {
+            Node result = null;
+
+            result = _nodes[key];
+
+            return result;
+        }
+
         private void GetModelHierarchyRecursively(EAAPI.Package currentPackage, Node currentNode)
         {
             Console.WriteLine("Package: " + currentPackage.Name);
-
 
             string packageID = EaSpecIfGuidConverter.ConvertEaGuidToSpecIfGuid(currentPackage.Element.ElementGUID);
             string packageRevision = EaDateToRevisionConverter.ConvertDateToRevision(currentPackage.Element.Modified);
@@ -301,6 +313,7 @@ namespace MDD4All.SpecIF.DataProvider.EA.Converters
                 };
 
                 currentNode.Nodes.Add(node);
+                _nodes.Add(new Key(node.ID, node.Revision), node);
             }
 
             // recursive call for child packages
@@ -314,6 +327,7 @@ namespace MDD4All.SpecIF.DataProvider.EA.Converters
                 {
                 };
                 currentNode.Nodes.Add(childNode);
+                _nodes.Add(new Key(childNode.ID, childNode.Revision), childNode);
 
                 GetModelHierarchyRecursively(childPackage, childNode);
 
@@ -346,6 +360,7 @@ namespace MDD4All.SpecIF.DataProvider.EA.Converters
             };
 
             currentNode.Nodes.Add(node);
+            _nodes.Add(new Key(node.ID, node.Revision), node);
 
             // diagrams
             for (short diagramCounter = 0; diagramCounter < currentElement.Diagrams.Count; diagramCounter++)
@@ -366,6 +381,7 @@ namespace MDD4All.SpecIF.DataProvider.EA.Converters
                 };
 
                 node.Nodes.Add(diagramNode);
+                _nodes.Add(new Key(node.ID, node.Revision), node);
             }
 
             // sub-elements
@@ -403,6 +419,7 @@ namespace MDD4All.SpecIF.DataProvider.EA.Converters
                 };
 
                 node.Nodes.Add(embeddedElementNode);
+                _nodes.Add(new Key(embeddedElementNode.ID, embeddedElementNode.Revision), embeddedElementNode);
             }
 
 

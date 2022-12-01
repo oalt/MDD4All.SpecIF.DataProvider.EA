@@ -7,6 +7,7 @@ using MDD4All.SpecIF.DataProvider.EA.Converters;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using EAAPI = EA;
 
 namespace MDD4All.SpecIF.DataProvider.EA
@@ -207,7 +208,15 @@ namespace MDD4All.SpecIF.DataProvider.EA
 
         public override List<Node> GetChildNodes(Key parentNodeKey)
         {
-            throw new NotImplementedException();
+            List<Node> result = new List<Node>();
+
+            Node node = _eaUmlToSpecIfConverter.GetNodeByKey(parentNodeKey);
+            if(node != null && node.Nodes != null && node.Nodes.Any())
+            {
+                result = node.Nodes;
+            }
+
+            return result;
         }
 
         public override string GetLatestResourceRevisionForBranch(string resourceID, string branchName)
@@ -217,7 +226,7 @@ namespace MDD4All.SpecIF.DataProvider.EA
 
         public override Node GetNodeByKey(Key key)
         {
-            throw new NotImplementedException();
+            return _eaUmlToSpecIfConverter.GetNodeByKey(key);
         }
 
         public override Node GetParentNode(Key childNode)
@@ -232,7 +241,17 @@ namespace MDD4All.SpecIF.DataProvider.EA
 
         public override List<ProjectDescriptor> GetProjectDescriptions()
         {
-            throw new NotImplementedException();
+            List<ProjectDescriptor> result = new List<ProjectDescriptor>();
+
+            ProjectDescriptor projectDescriptor = new ProjectDescriptor()
+            {
+                ID = "EA_Project",
+
+            };
+
+            result.Add(projectDescriptor);
+
+            return result;
         }
 
         
