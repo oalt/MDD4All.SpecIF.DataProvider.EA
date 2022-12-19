@@ -193,7 +193,8 @@ namespace MDD4All.SpecIF.DataProvider.EA
 
         public override List<Resource> GetAllResourceRevisions(string resourceID)
         {
-            throw new NotImplementedException();
+            //TODO implement this
+            return new List<Resource>();
         }
 
         public override List<Statement> GetAllStatementRevisions(string statementID)
