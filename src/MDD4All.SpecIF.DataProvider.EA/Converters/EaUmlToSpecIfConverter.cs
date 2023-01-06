@@ -7,7 +7,6 @@ using EAAPI = EA;
 using MDD4All.SpecIF.DataModels;
 using MDD4All.EnterpriseArchitect.Manipulations;
 using System.IO;
-using System.Drawing;
 using MDD4All.SpecIF.DataModels.Helpers;
 using MDD4All.SpecIF.DataModels.Manipulation;
 using MDD4All.SpecIF.DataProvider.Contracts;
@@ -16,7 +15,6 @@ using MDD4All.SVG.DataModels;
 using System.Xml.Serialization;
 using System.Xml;
 using MDD4All.SpecIF.DataModels.DiagramInterchange;
-using MDD4All.SpecIF.DataModels.DiagramInterchange.BaseElements;
 using Newtonsoft.Json;
 using MDD4All.SpecIF.DataProvider.EA.Converters.DataModels;
 using MDD4All.EAFacade.DataAccess.Cached;
@@ -89,7 +87,7 @@ namespace MDD4All.SpecIF.DataProvider.EA.Converters
             Node node = new Node();
 
             GetModelHierarchyRecursively(selectedPackage, node);
-
+            
             result.Hierarchies.Add(node);
 
             foreach (KeyValuePair<string, Resource> keyValuePair in _resources)
@@ -160,6 +158,14 @@ namespace MDD4All.SpecIF.DataProvider.EA.Converters
 
             return result;
         }
+
+        //public List<Resource> GetAllResourceRevisions(string id)
+        //{
+        //    foreach(KeyValuePair<string, Resource> keyValuePair in _resources)
+        //    {
+        //        if(keyValuePair.Key == id)
+        //    }
+        //}
 
         public Statement GetStatementByID(string id)
         {
@@ -717,6 +723,8 @@ namespace MDD4All.SpecIF.DataProvider.EA.Converters
 
         #region CONVERTERS
 
+        private HashSet<string> _resourcesInCreation = new HashSet<string>();
+
         public Resource ConvertElement(EAAPI.Element eaElement)
         {
             Resource result;
@@ -724,8 +732,7 @@ namespace MDD4All.SpecIF.DataProvider.EA.Converters
             string specIfID = EaSpecIfGuidConverter.ConvertEaGuidToSpecIfGuid(eaElement.ElementGUID);
             string revision = EaDateToRevisionConverter.ConvertDateToRevision(eaElement.Modified);
 
-            string cacheKey = GetCacheKeyForElement(eaElement);
-
+            string cacheKey = GetCacheKeyForElement(eaElement);           
 
             string elementType = eaElement.Type;
 
@@ -767,7 +774,7 @@ namespace MDD4All.SpecIF.DataProvider.EA.Converters
 
                 if (resourceClass.ID != "RC-Hierarchy")
                 {
-                    elementResource.SetPropertyValue(new Key("PC-Status", "1.1"), new Value(GetStatusEnumID(eaElement.Status)));
+                    elementResource.SetPropertyValue(new Key("PC-LifeCycleStatus", "1.1"), new Value(GetStatusEnumID(eaElement.Status)));
                 }
 
                 if (resourceClass.ID == "RC-State" ||
@@ -966,7 +973,14 @@ namespace MDD4All.SpecIF.DataProvider.EA.Converters
 
                 result.AlternativeIDs.Add(alternativeId);
 
-                _elementResources.Add(cacheKey, resource);
+                if (!_elementResources.ContainsKey(cacheKey))
+                {
+                    _elementResources.Add(cacheKey, resource);
+                }
+                else
+                {
+                    result = _elementResources[cacheKey].Resource;
+                }
             }
             else
             {
@@ -1074,7 +1088,14 @@ namespace MDD4All.SpecIF.DataProvider.EA.Converters
 
                         };
 
-                        _portStateResources.Add(cacheKey, portStateResource);
+                        if (!_portStateResources.ContainsKey(cacheKey))
+                        {
+                            _portStateResources.Add(cacheKey, portStateResource);
+                        }
+                        else
+                        {
+                            portStateResource = _portStateResources[cacheKey];
+                        }
 
                     }
                     else
@@ -1221,9 +1242,19 @@ namespace MDD4All.SpecIF.DataProvider.EA.Converters
                     ParentEaGUID = parent.EaGUID
                 };
 
-                result.Add(tagValueResource);
+                
 
-                _implicitElementResources.Add(GetCacheKey(tagResource), tagValueResource);
+
+                string cacheKey = GetCacheKey(tagResource);
+                if (!_implicitElementResources.ContainsKey(cacheKey))
+                {
+                    _implicitElementResources.Add(GetCacheKey(tagResource), tagValueResource);
+                    result.Add(tagValueResource);
+                }
+                else
+                {
+                    result.Add(_implicitElementResources[cacheKey]);
+                }
             }
 
 
@@ -1954,7 +1985,14 @@ namespace MDD4All.SpecIF.DataProvider.EA.Converters
                         diagramResource.ImplicitDiagramStatements.Add(containsStatement);
                     }
 
-                    _diagramResources.Add(cacheKey, diagramResource);
+                    if (!_diagramResources.ContainsKey(cacheKey))
+                    {
+                        _diagramResources.Add(cacheKey, diagramResource);
+                    }
+                    else
+                    {
+                        result = _diagramResources[cacheKey].Resource;
+                    }
 
                 }
             }
