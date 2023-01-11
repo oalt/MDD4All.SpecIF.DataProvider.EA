@@ -39,6 +39,7 @@
   <ItemGroup>
     <ProjectReference Include="$(SolutionDir)\MDD4All.SpecIF.DataProvider.Contracts\src\MDD4All.SpecIF.DataProvider.Contracts\MDD4All.SpecIF.DataProvider.Contracts-dev.csproj" />
     <ProjectReference Include="..\..\..\MDD4All.SpecIF.DataModels.Manipulation\src\MDD4All.SpecIF.DataModels.Manipulation\MDD4All.SpecIF.DataModels.Manipulation-dev.csproj" />
+    <ProjectReference Include="..\..\..\MDD4All.SpecIF.DataProvider.Base\src\MDD4All.SpecIF.DataProvider.Base\MDD4All.SpecIF.DataProvider.Base-dev.csproj" />
   </ItemGroup>
 
   <ItemGroup>
