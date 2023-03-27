@@ -1,0 +1,1 @@
+﻿Data provider to provide SpecIF data with Sparx Systems Enterprise Architect.
