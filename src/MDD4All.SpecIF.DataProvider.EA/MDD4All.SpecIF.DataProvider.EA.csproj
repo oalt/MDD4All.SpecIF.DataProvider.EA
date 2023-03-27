@@ -10,6 +10,7 @@
     <Company>MDD4All.de</Company>
     <Description>SpecIF data provider for Sparx Enterprise Architect.</Description>
     <Copyright>(c) MDD4All.de</Copyright>
+    <PackageReadmeFile>Nuget.md</PackageReadmeFile>
   </PropertyGroup>
 
     <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -41,6 +42,13 @@
       <HintPath>..\libs\Interop.EA.dll</HintPath>
       <EmbedInteropTypes>false</EmbedInteropTypes>
     </Reference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="Nuget.md">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
   </ItemGroup>
 
 </Project>
