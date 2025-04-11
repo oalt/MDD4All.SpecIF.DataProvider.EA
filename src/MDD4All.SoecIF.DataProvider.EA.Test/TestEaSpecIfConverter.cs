@@ -39,11 +39,12 @@ namespace MDD4All.SoecIF.DataProvider.EA.Test
 
 					EaUmlToSpecIfConverter converter;
 
-					ISpecIfMetadataReader metadataReader = new SpecIfFileMetadataReader("d:\\work\\github\\SpecIF\\classDefinitions");
+					ISpecIfMetadataReader metadataReader = new SpecIfFileMetadataReader("c:\\specifClasses");
 
 					converter = new EaUmlToSpecIfConverter(repository, metadataReader);
 
 					Resource resource = converter.ConvertDiagram(diagram);
+
 
 					//specIF = converter.ConvertModelToSpecIF(rootModelPackage);
 						

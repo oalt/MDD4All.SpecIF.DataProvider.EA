@@ -267,7 +267,7 @@ namespace MDD4All.SpecIF.DataProvider.EA.Converters
 
             string json = JsonConvert.SerializeObject(node);
 
-            System.IO.File.WriteAllText(@"d:\test\specif\hierarchy.json", json);
+            System.IO.File.WriteAllText(@"c:\test\specif\hierarchy.json", json);
 
             //}
             //else
