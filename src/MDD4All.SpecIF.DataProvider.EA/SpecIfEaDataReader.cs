@@ -256,8 +256,9 @@ namespace MDD4All.SpecIF.DataProvider.EA
             return result;
         }
 
-        
-
-        
+        public override string GetProjectIDFromNodeID(string nodeID)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
