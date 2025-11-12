@@ -77,7 +77,7 @@ namespace MDD4All.SpecIF.DataProvider.EA
             throw new NotImplementedException();
         }
 
-        public override Node GetHierarchyByKey(Key id)
+        public override Node GetHierarchyByKey(Key id, string projectID = null)
         {
             Node result = null;
 
